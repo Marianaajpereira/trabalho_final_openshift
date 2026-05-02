@@ -1,8 +1,11 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: trabalho-final-openshift
   namespace: lab-open-shift-mariana364217
+  labels:
+    app: trabalho-final-openshift
 spec:
   replicas: 1
   selector:
@@ -32,3 +35,40 @@ spec:
             port: http
           initialDelaySeconds: 10
           periodSeconds: 5
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trabalho-final-openshift
+  namespace: lab-open-shift-mariana364217
+  labels:
+    app: trabalho-final-openshift
+spec:
+  type: ClusterIP
+  selector:
+    deployment: trabalho-final-openshift
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+    protocol: TCP
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: trabalho-final-openshift
+  namespace: lab-open-shift-mariana364217
+  labels:
+    app: trabalho-final-openshift
+spec:
+  to:
+    kind: Service
+    name: trabalho-final-openshift
+    weight: 100
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
