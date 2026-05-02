@@ -7,18 +7,6 @@ metadata:
 
 ---
 apiVersion: v1
-kind: Secret
-metadata:
-  name: app-secrets
-  namespace: aplicacao
-type: Opaque
-stringData:
-  # Adicione suas variáveis de ambiente sensíveis aqui
-  DATABASE_PASSWORD: "sua-senha-aqui"
-  API_KEY: "sua-api-key-aqui"
-
----
-apiVersion: v1
 kind: ConfigMap
 metadata:
   name: app-config
@@ -145,13 +133,19 @@ spec:
           readOnly: true
         - name: logs-volume
           mountPath: /app/logs
+        - name: data-volume
+          mountPath: /app/data
       
       volumes:
       - name: config-volume
         configMap:
           name: app-config
       - name: logs-volume
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: aplicacao-pvc-logs
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: aplicacao-pvc-data
       
       # Tolerâncias e afinidades
       affinity:
