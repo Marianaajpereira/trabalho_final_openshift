@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trabalho-final-openshift
+  namespace: lab-open-shift-mariana364217
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: trabalho-final-openshift
+  template:
+    metadata:
+      labels:
+        deployment: trabalho-final-openshift
+    spec:
+      containers:
+      - name: trabalho-final-openshift
+        image: image-registry.openshift-image-registry.svc:5000/lab-open-shift-mariana364217/trabalho-final-openshift:latest
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /health/live
+            port: http
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 5
