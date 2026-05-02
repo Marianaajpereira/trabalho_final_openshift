@@ -3,6 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: app-config
+  namespace: lab-open-shift-mariana364217
 data:
   LOG_LEVEL: "INFO"
   ENVIRONMENT: "production"
@@ -12,6 +13,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: app-secrets
+  namespace: lab-open-shift-mariana364217
 type: Opaque
 stringData:
   DATABASE_PASSWORD: "sua-senha-banco-dados"
@@ -22,6 +24,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: trabalho-final-openshift
+  namespace: lab-open-shift-mariana364217
   labels:
     app: trabalho-final-openshift
 spec:
@@ -130,6 +133,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: trabalho-final-openshift
+  namespace: lab-open-shift-mariana364217
   labels:
     app: trabalho-final-openshift
 spec:
